@@ -32,6 +32,12 @@
             android:exported="false"
             android:theme="@style/Theme.TravelWise" />
 
+        <!-- Signup Activity -->
+        <activity
+            android:name=".SignupActivity"
+            android:exported="false"
+            android:theme="@style/Theme.TravelWise" />
+
         <!-- Home Activity -->
         <activity
             android:name=".ui.home.HomeActivity"

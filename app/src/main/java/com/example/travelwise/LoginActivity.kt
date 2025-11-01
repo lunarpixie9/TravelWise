@@ -47,8 +47,8 @@ class LoginActivity : AppCompatActivity() {
 
         // Sign up link click listener
         binding.tvSignUp.setOnClickListener {
-            Toast.makeText(this, "Sign Up clicked", Toast.LENGTH_SHORT).show()
-            // TODO: Navigate to sign up activity
+            val intent = Intent(this, SignupActivity::class.java)
+            startActivity(intent)
         }
 
         // Google login click listener
