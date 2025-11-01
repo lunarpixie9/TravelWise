@@ -11,7 +11,7 @@ import com.example.travelwise.ui.DestinationDetailActivity
 import com.example.travelwise.adapters.DestinationAdapter
 import com.example.travelwise.models.Destination
 import kotlinx.coroutines.launch
-
+    
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHomeBinding
