@@ -26,6 +26,12 @@
             </intent-filter>
         </activity>
 
+        <!-- Login Activity -->
+        <activity
+            android:name=".LoginActivity"
+            android:exported="false"
+            android:theme="@style/Theme.TravelWise" />
+
         <!-- Home Activity -->
         <activity
             android:name=".ui.home.HomeActivity"
