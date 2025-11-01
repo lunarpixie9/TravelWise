@@ -11,13 +11,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySplashBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
-//        val signup : Button = findViewById<Button>(R.id.btnSignUp)
         super.onCreate(savedInstanceState)
         binding = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Hide action bar for splash screen
+        // Hide action bar for splash
         supportActionBar?.hide()
 
         binding.btnExplore.setOnClickListener {
@@ -25,6 +23,5 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
-
-
 }
+

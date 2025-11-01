@@ -1,70 +1,83 @@
 package com.example.travelwise.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.example.travelwise.R
+import com.example.travelwise.databinding.ItemDestinationCardBinding
 import com.example.travelwise.models.Destination
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class DestinationAdapter(
-    private val destinations: List<Destination>,
     private val onItemClick: (Destination) -> Unit
-) : RecyclerView.Adapter<DestinationAdapter.DestinationViewHolder>() {
-
-    inner class DestinationViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val ivDestination: ImageView = itemView.findViewById(R.id.ivDestination)
-        val tvDestinationName: TextView = itemView.findViewById(R.id.tvDestinationName)
-        val tvLocation: TextView = itemView.findViewById(R.id.tvLocation)
-        val tvPrice: TextView = itemView.findViewById(R.id.tvPrice)
-        val tvRating: TextView = itemView.findViewById(R.id.tvRating)
-        val btnFavorite: FloatingActionButton = itemView.findViewById(R.id.btnFavorite)
-
-        fun bind(destination: Destination) {
-            tvDestinationName.text = destination.name
-            tvLocation.text = destination.location
-            tvPrice.text = "$${destination.price}/Day"
-            tvRating.text = destination.rating.toString()
-
-            // Load image directly from drawable resource
-            ivDestination.setImageResource(destination.imageResource)
-
-            // Handle favorite button
-            updateFavoriteIcon(destination.isFavorite)
-            btnFavorite.setOnClickListener {
-                destination.isFavorite = !destination.isFavorite
-                updateFavoriteIcon(destination.isFavorite)
-            }
-
-            // Handle item click
-            itemView.setOnClickListener {
-                onItemClick(destination)
-            }
-        }
-
-        private fun updateFavoriteIcon(isFavorite: Boolean) {
-            val iconRes = if (isFavorite) {
-                R.drawable.ic_heart
-            } else {
-                R.drawable.ic_heart
-            }
-            btnFavorite.setImageResource(iconRes)
-        }
-    }
+) : ListAdapter<Destination, DestinationAdapter.DestinationViewHolder>(DestinationDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DestinationViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_destination_card, parent, false)
-        return DestinationViewHolder(view)
+        val binding = ItemDestinationCardBinding.inflate(
+            LayoutInflater.from(parent.context),
+            parent,
+            false
+        )
+        return DestinationViewHolder(binding, onItemClick)
     }
 
     override fun onBindViewHolder(holder: DestinationViewHolder, position: Int) {
-        holder.bind(destinations[position])
+        holder.bind(getItem(position))
     }
 
-    override fun getItemCount(): Int = destinations.size
+    class DestinationViewHolder(
+        private val binding: ItemDestinationCardBinding,
+        private val onItemClick: (Destination) -> Unit
+    ) : RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(destination: Destination) {
+            binding.apply {
+                // Set image
+                ivDestination.setImageResource(destination.imageResource)
+
+                // Set text content
+                tvDestinationName.text = destination.name
+                tvLocation.text = destination.location
+                tvPrice.text = "$${destination.price.toInt()}"
+                tvRating.text = destination.rating.toString()
+
+                // Card click listener
+                root.setOnClickListener {
+                    onItemClick(destination)
+                }
+
+                // Action button listeners
+                btnCamera.setOnClickListener {
+                    // TODO: Handle camera action
+                }
+
+                btnNavigation.setOnClickListener {
+                    // TODO: Handle navigation action
+                }
+
+                btnFavorite.setOnClickListener {
+                    // TODO: Handle favorite action
+                    // Toggle favorite icon here
+                }
+
+                btnCalendar.setOnClickListener {
+                    // TODO: Handle calendar action
+                }
+
+                btnUser.setOnClickListener {
+                    // TODO: Handle user action
+                }
+            }
+        }
+    }
+
+    private class DestinationDiffCallback : DiffUtil.ItemCallback<Destination>() {
+        override fun areItemsTheSame(oldItem: Destination, newItem: Destination): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: Destination, newItem: Destination): Boolean {
+            return oldItem == newItem
+        }
+    }
 }

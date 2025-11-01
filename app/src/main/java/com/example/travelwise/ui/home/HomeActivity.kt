@@ -1,54 +1,56 @@
 package com.example.travelwise.ui.home
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.travelwise.databinding.FragmentHomeBinding
 import com.example.travelwise.adapters.DestinationAdapter
+import com.example.travelwise.databinding.ActivityHomeBinding
+import com.example.travelwise.models.Destination
+import kotlinx.coroutines.launch
 
-class HomeFragment : Fragment() {
+class HomeActivity : AppCompatActivity() {
 
-    private var _binding: FragmentHomeBinding? = null
-    private val binding get() = _binding!!
-
+    private lateinit var binding: ActivityHomeBinding
     private val viewModel: HomeViewModel by viewModels()
     private lateinit var destinationAdapter: DestinationAdapter
+    private val destinations = mutableListOf<Destination>()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityHomeBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         setupRecyclerView()
         setupClickListeners()
         observeViewModel()
 
-        // Load initial data
-        viewModel.loadDestinations("Best Offers")
+        // Load sample data
+        loadSampleData()
     }
 
     private fun setupRecyclerView() {
+        // Initialize adapter with click listener
         destinationAdapter = DestinationAdapter { destination ->
-            // Navigate to destination detail
-            // TODO: Add navigation to detail screen
+            openDestinationDetail(destination)
         }
 
+        // Attach to RecyclerView
         binding.rvDestinations.apply {
-            layoutManager = LinearLayoutManager(requireContext())
+            layoutManager = LinearLayoutManager(this@HomeActivity)
             adapter = destinationAdapter
-            setHasFixedSize(true)
         }
+
+        // Optionally set initial data (empty at start)
+        destinationAdapter.submitList(destinations)
+    }
+
+    private fun openDestinationDetail(destination: Destination) {
+        // TODO: Navigate to destination detail
+        // val intent = Intent(this, DestinationDetailActivity::class.java)
+        // intent.putExtra("destination_id", destination.id)
+        // startActivity(intent)
     }
 
     private fun setupClickListeners() {
@@ -95,23 +97,24 @@ class HomeFragment : Fragment() {
         binding.btnFilter.setOnClickListener {
             // TODO: Show filter bottom sheet
         }
-
-        // Search functionality
-        // TODO: Add search text watcher if needed
     }
 
     private fun observeViewModel() {
-        viewModel.destinations.observe(viewLifecycleOwner) { destinations ->
-            destinationAdapter.submitList(destinations)
+        // Observe destination list updates
+        viewModel.destinations.observe(this) { newDestinations ->
+            destinationAdapter.submitList(newDestinations)
         }
 
-        viewModel.location.observe(viewLifecycleOwner) { location ->
+        // Observe current location
+        viewModel.location.observe(this) { location ->
             binding.tvLocation.text = location
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
+    private fun loadSampleData() {
+        lifecycleScope.launch {
+            // Load initial data
+            viewModel.loadDestinations("Best Offers")
+        }
     }
 }
