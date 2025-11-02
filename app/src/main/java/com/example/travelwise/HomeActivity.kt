@@ -6,12 +6,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.travelwise.R
-import com.example.travelwise.databinding.ActivityHomeBinding
-import com.example.travelwise.ui.DestinationDetailActivity
 import com.example.travelwise.adapters.DestinationAdapter
+import com.example.travelwise.databinding.ActivityHomeBinding
 import com.example.travelwise.models.Destination
+import com.example.travelwise.ui.DestinationDetailActivity
 import kotlinx.coroutines.launch
-    
+
 class HomeActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityHomeBinding
@@ -23,14 +23,53 @@ class HomeActivity : AppCompatActivity() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Hide action bar
+        // ✅ Hide action bar
         supportActionBar?.hide()
 
-        // Initialize RecyclerView
+        // ✅ Get username from intent or show default
+        val username = intent.getStringExtra("USERNAME") ?: "Traveler"
+
+        // ✅ Capitalize first letter and set greeting text
+        val displayName = username.replaceFirstChar { it.uppercase() }
+        binding.tvGreeting.text = "Welcome, $displayName!"
+
+        // ✅ Setup category boxes
+        setupCategoryBoxes()
+
+        // ✅ RecyclerView setup
         setupRecyclerView()
 
-        // Load sample data
+        // ✅ Load sample destinations
         loadSampleData()
+
+        // ✅ Bottom navigation
+        binding.bottomNavigation.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_home -> true
+                R.id.nav_trips -> true
+                R.id.nav_favorites -> true
+                R.id.nav_profile -> true
+                else -> false
+            }
+        }
+    }
+
+    private fun setupCategoryBoxes() {
+        // Hotels - using View Binding
+        binding.boxHotels.ivCategoryIcon.setImageResource(R.drawable.ic_hotel)
+        binding.boxHotels.tvCategoryName.text = "Hotels"
+
+        // Flights
+        binding.boxFlights.ivCategoryIcon.setImageResource(R.drawable.ic_flight)
+        binding.boxFlights.tvCategoryName.text = "Flights"
+
+        // Cars
+        binding.boxCars.ivCategoryIcon.setImageResource(R.drawable.ic_car)
+        binding.boxCars.tvCategoryName.text = "Cars"
+
+        // Meals
+        binding.boxMeals.ivCategoryIcon.setImageResource(R.drawable.ic_meal)
+        binding.boxMeals.tvCategoryName.text = "Meals"
     }
 
     private fun setupRecyclerView() {
@@ -46,7 +85,6 @@ class HomeActivity : AppCompatActivity() {
 
     private fun loadSampleData() {
         lifecycleScope.launch {
-            // FIXED: You were reassigning destinations instead of adding to it
             destinations.clear()
             destinations.addAll(
                 listOf(
@@ -109,11 +147,8 @@ class HomeActivity : AppCompatActivity() {
             putExtra("DESTINATION_LOCATION", destination.location)
             putExtra("DESTINATION_PRICE", destination.price)
             putExtra("DESTINATION_RATING", destination.rating)
-            putExtra("DESTINATION_IMAGE", destination.imageResource)  // FIXED: removed ": Int"
-            putExtra(
-                "DESTINATION_DESC",
-                destination.description
-            )
+            putExtra("DESTINATION_IMAGE", destination.imageResource)
+            putExtra("DESTINATION_DESC", destination.description)
         }
         startActivity(intent)
     }

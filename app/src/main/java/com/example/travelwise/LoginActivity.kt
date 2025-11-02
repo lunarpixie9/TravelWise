@@ -24,16 +24,20 @@ class LoginActivity : AppCompatActivity() {
             finish()
         }
 
-        // Login button click listener
+        // ✅ Login button click listener (updated)
         binding.btnLogin.setOnClickListener {
             val email = binding.etEmail.text.toString().trim()
             val password = binding.etPassword.text.toString().trim()
 
             if (validateInput(email, password)) {
-                // For now, just navigate to HomeActivity
-                // In production, you would authenticate with a backend
-                val intent = Intent(this, HomeActivity::class.java)
-                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                // ✅ Extract username (first part of email)
+                val username = email.substringBefore("@")
+
+                // ✅ Start HomeActivity and pass username
+                val intent = Intent(this, HomeActivity::class.java).apply {
+                    putExtra("USERNAME", username)
+                    flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                }
                 startActivity(intent)
                 finish()
             }
