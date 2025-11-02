@@ -2,6 +2,7 @@ package com.example.travelwise
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.InputType
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.travelwise.databinding.ActivitySignupBinding
@@ -10,6 +11,8 @@ import com.example.travelwise.ui.home.HomeActivity
 class SignupActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivitySignupBinding
+    private var isPasswordVisible = false
+    private var isConfirmPasswordVisible = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -19,6 +22,41 @@ class SignupActivity : AppCompatActivity() {
         // Hide action bar
         supportActionBar?.hide()
 
+        setupPasswordToggles()
+        setupClickListeners()
+    }
+
+    private fun setupPasswordToggles() {
+        // Password visibility toggle
+        binding.btnTogglePassword.setOnClickListener {
+            isPasswordVisible = !isPasswordVisible
+            if (isPasswordVisible) {
+                binding.etPassword.inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+                binding.btnTogglePassword.setImageResource(R.drawable.ic_visibility)
+            } else {
+                binding.etPassword.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+                binding.btnTogglePassword.setImageResource(R.drawable.ic_visibility_off)
+            }
+            // Move cursor to end
+            binding.etPassword.setSelection(binding.etPassword.text?.length ?: 0)
+        }
+
+        // Confirm Password visibility toggle
+        binding.btnToggleConfirmPassword.setOnClickListener {
+            isConfirmPasswordVisible = !isConfirmPasswordVisible
+            if (isConfirmPasswordVisible) {
+                binding.etConfirmPassword.inputType = InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+                binding.btnToggleConfirmPassword.setImageResource(R.drawable.ic_visibility)
+            } else {
+                binding.etConfirmPassword.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+                binding.btnToggleConfirmPassword.setImageResource(R.drawable.ic_visibility_off)
+            }
+            // Move cursor to end
+            binding.etConfirmPassword.setSelection(binding.etConfirmPassword.text?.length ?: 0)
+        }
+    }
+
+    private fun setupClickListeners() {
         // Back button click listener
         binding.btnBack.setOnClickListener {
             finish()
@@ -81,65 +119,65 @@ class SignupActivity : AppCompatActivity() {
     ): Boolean {
         // Validate full name
         if (fullName.isEmpty()) {
-            binding.etFullName.error = "Full name is required"
+            Toast.makeText(this, "Full name is required", Toast.LENGTH_SHORT).show()
             binding.etFullName.requestFocus()
             return false
         }
 
         if (fullName.length < 3) {
-            binding.etFullName.error = "Name must be at least 3 characters"
+            Toast.makeText(this, "Name must be at least 3 characters", Toast.LENGTH_SHORT).show()
             binding.etFullName.requestFocus()
             return false
         }
 
         // Validate email
         if (email.isEmpty()) {
-            binding.etEmail.error = "Email is required"
+            Toast.makeText(this, "Email is required", Toast.LENGTH_SHORT).show()
             binding.etEmail.requestFocus()
             return false
         }
 
         if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            binding.etEmail.error = "Please enter a valid email"
+            Toast.makeText(this, "Please enter a valid email", Toast.LENGTH_SHORT).show()
             binding.etEmail.requestFocus()
             return false
         }
 
         // Validate phone
         if (phone.isEmpty()) {
-            binding.etPhone.error = "Phone number is required"
+            Toast.makeText(this, "Phone number is required", Toast.LENGTH_SHORT).show()
             binding.etPhone.requestFocus()
             return false
         }
 
         if (phone.length < 10) {
-            binding.etPhone.error = "Please enter a valid phone number"
+            Toast.makeText(this, "Please enter a valid phone number", Toast.LENGTH_SHORT).show()
             binding.etPhone.requestFocus()
             return false
         }
 
         // Validate password
         if (password.isEmpty()) {
-            binding.etPassword.error = "Password is required"
+            Toast.makeText(this, "Password is required", Toast.LENGTH_SHORT).show()
             binding.etPassword.requestFocus()
             return false
         }
 
         if (password.length < 6) {
-            binding.etPassword.error = "Password must be at least 6 characters"
+            Toast.makeText(this, "Password must be at least 6 characters", Toast.LENGTH_SHORT).show()
             binding.etPassword.requestFocus()
             return false
         }
 
         // Validate confirm password
         if (confirmPassword.isEmpty()) {
-            binding.etConfirmPassword.error = "Please confirm your password"
+            Toast.makeText(this, "Please confirm your password", Toast.LENGTH_SHORT).show()
             binding.etConfirmPassword.requestFocus()
             return false
         }
 
         if (password != confirmPassword) {
-            binding.etConfirmPassword.error = "Passwords do not match"
+            Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show()
             binding.etConfirmPassword.requestFocus()
             return false
         }
@@ -153,4 +191,3 @@ class SignupActivity : AppCompatActivity() {
         return true
     }
 }
-

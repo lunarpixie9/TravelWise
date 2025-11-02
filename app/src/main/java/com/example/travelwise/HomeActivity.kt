@@ -107,7 +107,7 @@ class HomeActivity : AppCompatActivity() {
                         location = "Osaka, Japan",
                         price = 130.0,
                         rating = 4.8f,
-                        imageResource = R.drawable.image1,
+                        imageResource = R.drawable.image11,
                         description = "Beautiful historic castle"
                     ),
                     Destination(
@@ -116,7 +116,7 @@ class HomeActivity : AppCompatActivity() {
                         location = "Las Vegas, US",
                         price = 200.0,
                         rating = 4.9f,
-                        imageResource = R.drawable.image2,
+                        imageResource = R.drawable.image12,
                         description = "Stunning mountain views"
                     ),
                     Destination(
@@ -125,7 +125,7 @@ class HomeActivity : AppCompatActivity() {
                         location = "Tokyo, Japan",
                         price = 150.0,
                         rating = 4.7f,
-                        imageResource = R.drawable.image3,
+                        imageResource = R.drawable.image13,
                         description = "Iconic city landmark"
                     ),
                     Destination(
@@ -134,7 +134,7 @@ class HomeActivity : AppCompatActivity() {
                         location = "Kyoto, Japan",
                         price = 120.0,
                         rating = 4.9f,
-                        imageResource = R.drawable.image4,
+                        imageResource = R.drawable.image14,
                         description = "Ancient temple complex"
                     ),
                     Destination(
@@ -143,7 +143,7 @@ class HomeActivity : AppCompatActivity() {
                         location = "Bali, Indonesia",
                         price = 180.0,
                         rating = 4.6f,
-                        imageResource = R.drawable.image5,
+                        imageResource = R.drawable.image15,
                         description = "Tropical paradise"
                     )
                 )

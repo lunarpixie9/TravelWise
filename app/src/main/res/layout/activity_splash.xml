@@ -25,13 +25,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- App Logo -->
-        <ImageView
-            android:layout_width="80dp"
-            android:layout_height="80dp"
-            android:src="@drawable/ic_travel_logo"
-            android:contentDescription="@string/app_logo"
-            android:layout_marginBottom="24dp" />
 
         <!-- Title -->
         <TextView
@@ -50,7 +43,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/discover_amazing_places_and_create_nunforgettable_memories"
-            android:textSize="14sp"
+            android:textSize="15sp"
             android:textColor="#E0E0E0"
             android:gravity="center"
             android:lineSpacingExtra="2dp"
@@ -91,9 +84,9 @@
                 android:text="@string/explore_now2"
                 android:textAllCaps="true"
                 android:textColor="@android:color/white"
-                android:textSize="16sp"
-                app:backgroundTint="@color/primary"
-                app:cornerRadius="32dp"
+                android:textSize="14sp"
+                app:backgroundTint="#F7F64193"
+                app:cornerRadius="36dp"
                 app:icon="@drawable/ic_arrow_forward"
                 app:iconGravity="textEnd"
                 app:iconPadding="10dp"

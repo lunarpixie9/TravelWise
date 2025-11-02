@@ -22,7 +22,7 @@
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:src="@drawable/ic_search"
-            android:tint="@color/primary"
+            android:tint="#F7FA7EB8"
             android:contentDescription="Category Icon" />
 
         <TextView

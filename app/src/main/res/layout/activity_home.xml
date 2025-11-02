@@ -105,7 +105,7 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:src="@drawable/ic_filter"
-                        app:tint="@color/primary" />
+                        app:tint="#F7F64B9A" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 
@@ -177,7 +177,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="View All"
-                    android:textColor="@color/primary"
+                    android:textColor="#F7F22783"
                     android:textSize="14sp"
                     android:textStyle="bold" />
             </LinearLayout>
@@ -206,8 +206,8 @@
         android:layout_height="70dp"
         android:layout_gravity="bottom"
         android:background="@android:color/white"
-        app:itemIconTint="@color/nav_item_selector"
-        app:itemTextColor="@color/nav_item_selector"
+        app:itemIconTint="@color/bottom_nav_icon_color"
+        app:itemTextColor="@color/bottom_nav_text_color"
         app:itemRippleColor="@color/primary_light"
         app:labelVisibilityMode="labeled"
         app:menu="@menu/bottom_nav_menu" />
