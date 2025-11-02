@@ -9,7 +9,7 @@ import com.example.travelwise.R
 import com.example.travelwise.adapters.DestinationAdapter
 import com.example.travelwise.databinding.ActivityHomeBinding
 import com.example.travelwise.models.Destination
-import com.example.travelwise.ui.DestinationDetailActivity
+import com.example.travelwise.DestinationDetailActivity
 import kotlinx.coroutines.launch
 
 class HomeActivity : AppCompatActivity() {

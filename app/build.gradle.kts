@@ -63,6 +63,7 @@ dependencies {
     implementation(libs.androidx.navigation.ui.ktx)
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.9.4")
     testImplementation(libs.junit)
+    implementation("com.google.code.gson:gson:2.10.1")
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 }

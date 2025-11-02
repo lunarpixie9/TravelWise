@@ -1,102 +1,156 @@
-package com.example.travelwise.ui
+package com.example.travelwise
 
 import android.os.Bundle
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
-import com.example.travelwise.R
-import com.google.android.material.appbar.CollapsingToolbarLayout
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.travelwise.adapters.ImagePagerAdapter
+import com.example.travelwise.adapters.ItineraryAdapter
+import com.example.travelwise.adapters.PopularPlacesAdapter
+import com.example.travelwise.databinding.ActivityDestinationDetailBinding
+import com.example.travelwise.models.ItineraryItem
+import com.example.travelwise.models.PopularPlace
+import com.example.travelwise.utils.FavoritesManager
+import com.google.android.material.tabs.TabLayoutMediator
 
 class DestinationDetailActivity : AppCompatActivity() {
 
-    private lateinit var ivDestinationImage: ImageView
-    private lateinit var tvTitle: TextView
-    private lateinit var tvLocation: TextView
-    private lateinit var tvPrice: TextView
-    private lateinit var tvRating: TextView
-    private lateinit var tvDescription: TextView
-    private lateinit var btnBook: Button
-    private lateinit var collapsingToolbar: CollapsingToolbarLayout
-    private lateinit var toolbar: Toolbar
+    private lateinit var binding: ActivityDestinationDetailBinding
+    private lateinit var favoritesManager: FavoritesManager
+    private var destinationId: Int = 0
+
+    // Sample data - replace with actual data from intent
+    private val destinationImages = listOf(
+        R.drawable.image2,
+        R.drawable.image3,
+        R.drawable.image4,
+        R.drawable.image5
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_destination_detail)
+        binding = ActivityDestinationDetailBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        // Initialize views
-        initViews()
+        // Initialize favorites manager
+        favoritesManager = FavoritesManager(this)
 
-        // Setup toolbar
-        setupToolbar()
+        // Hide action bar
+        supportActionBar?.hide()
 
-        // Load data from intent
+        // Get data from intent
         loadDestinationData()
+
+        // Setup image viewpager
+        setupImageViewPager()
 
         // Setup click listeners
         setupClickListeners()
-    }
 
-    private fun initViews() {
-        ivDestinationImage = findViewById(R.id.ivDestinationImage)
-        tvTitle = findViewById(R.id.tvTitle)
-        tvLocation = findViewById(R.id.tvLocation)
-        tvPrice = findViewById(R.id.tvPrice)
-        tvRating = findViewById(R.id.tvRating)
-        tvDescription = findViewById(R.id.tvDescription)
-        btnBook = findViewById(R.id.btnBook)
-        collapsingToolbar = findViewById(R.id.collapsingToolbar)
-        toolbar = findViewById(R.id.toolbar)
-    }
+        // Setup RecyclerViews
+        setupItinerary()
+        setupPopularPlaces()
 
-    private fun setupToolbar() {
-        setSupportActionBar(toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.setDisplayShowTitleEnabled(false)
-
-        toolbar.setNavigationOnClickListener {
-            onBackPressed()
-        }
+        // Update favorite button state
+        updateFavoriteButton()
     }
 
     private fun loadDestinationData() {
-        val name = intent.getStringExtra("DESTINATION_NAME") ?: "Unknown"
-        val location = intent.getStringExtra("DESTINATION_LOCATION") ?: "Unknown"
-        val price = intent.getDoubleExtra("DESTINATION_PRICE", 0.0)
-        val rating = intent.getDoubleExtra("DESTINATION_RATING", 0.0)
-        val imageUrl = intent.getStringExtra("DESTINATION_IMAGE") ?: ""
-        val description = intent.getStringExtra("DESTINATION_DESC") ?: ""
+        // Get data passed from previous activity
+        destinationId = intent.getIntExtra("DESTINATION_ID", 0)
+        val name = intent.getStringExtra("DESTINATION_NAME") ?: "Matsumoto Castle"
+        val location = intent.getStringExtra("DESTINATION_LOCATION") ?: "Osaka, Japan"
+        val price = intent.getDoubleExtra("DESTINATION_PRICE", 130.0)
+        val rating = intent.getFloatExtra("DESTINATION_RATING", 4.8f)
+        val description = intent.getStringExtra("DESTINATION_DESC")
+            ?: "Beautiful historic castle with stunning architecture and rich cultural heritage. Perfect destination for history enthusiasts and photography lovers."
 
         // Set data to views
-        collapsingToolbar.title = name
-        tvTitle.text = name
-        tvLocation.text = location
-        tvPrice.text = "$$price"
-        tvRating.text = rating.toString()
-        tvDescription.text = description
+        binding.tvDestinationName.text = name
+        binding.tvLocation.text = location
+        binding.tvPrice.text = "₹${String.format("%.2f", price * 100)}"
+        binding.tvRating.text = rating.toString()
+        binding.tvDescription.text = description
 
-        // Load image
-        val imageResId = resources.getIdentifier(
-            imageUrl,
-            "drawable",
-            packageName
-        )
-        if (imageResId != 0) {
-            ivDestinationImage.setImageResource(imageResId)
-        } else {
-            ivDestinationImage.setImageResource(R.drawable.placeholder_destination)
-        }
+        // These would ideally come from an API or database
+        binding.tvDistance.text = "2.3 KM"
+        binding.tvTemperature.text = "17°C"
+    }
+
+    private fun setupImageViewPager() {
+        val adapter = ImagePagerAdapter(destinationImages)
+        binding.imageViewPager.adapter = adapter
+
+        // Connect TabLayout with ViewPager2 for indicators
+        TabLayoutMediator(binding.imageIndicator, binding.imageViewPager) { _, _ -> }.attach()
     }
 
     private fun setupClickListeners() {
-        btnBook.setOnClickListener {
-            Toast.makeText(
-                this,
-                "Booking feature coming soon!",
-                Toast.LENGTH_SHORT
-            ).show()
+        // Back button
+        binding.btnBack.setOnClickListener {
+            finish()
         }
+
+        // Share button
+        binding.btnShare.setOnClickListener {
+            Toast.makeText(this, "Share clicked", Toast.LENGTH_SHORT).show()
+            // TODO: Implement share functionality
+        }
+
+        // Favorite button
+        binding.btnFavorite.setOnClickListener {
+            toggleFavorite()
+        }
+
+        // Get Started button
+        binding.btnGetStarted.setOnClickListener {
+            Toast.makeText(this, "Proceeding to booking...", Toast.LENGTH_SHORT).show()
+            // TODO: Navigate to booking/checkout page
+        }
+    }
+
+    private fun toggleFavorite() {
+        if (favoritesManager.isFavorite(destinationId)) {
+            favoritesManager.removeFavorite(destinationId)
+            Toast.makeText(this, "Removed from favorites", Toast.LENGTH_SHORT).show()
+        } else {
+            favoritesManager.addFavorite(destinationId)
+            Toast.makeText(this, "Added to favorites", Toast.LENGTH_SHORT).show()
+        }
+        updateFavoriteButton()
+    }
+
+    private fun updateFavoriteButton() {
+        if (favoritesManager.isFavorite(destinationId)) {
+            binding.btnFavorite.setImageResource(R.drawable.ic_favorite_filled)
+        } else {
+            binding.btnFavorite.setImageResource(R.drawable.ic_favorite_border)
+        }
+    }
+
+    private fun setupItinerary() {
+        // Sample itinerary data
+        val itineraryItems = listOf(
+            ItineraryItem("Day 1", "Arrival and Castle Tour", "Explore the historic castle and surrounding gardens"),
+            ItineraryItem("Day 2", "Local Culture Experience", "Visit traditional markets and museums"),
+            ItineraryItem("Day 3", "Nature and Scenery", "Mountain hiking and scenic photography"),
+            ItineraryItem("Day 4", "Departure", "Last minute shopping and departure")
+        )
+
+        binding.rvItinerary.layoutManager = LinearLayoutManager(this)
+        binding.rvItinerary.adapter = ItineraryAdapter(itineraryItems)
+    }
+
+    private fun setupPopularPlaces() {
+        // Sample popular places data
+        val popularPlaces = listOf(
+            PopularPlace("Castle Main Tower", R.drawable.image2, "4.9"),
+            PopularPlace("Japanese Garden", R.drawable.image3, "4.7"),
+            PopularPlace("Historic Museum", R.drawable.image4, "4.6"),
+            PopularPlace("Traditional Market", R.drawable.image5, "4.5")
+        )
+
+        binding.rvPopularPlaces.layoutManager = LinearLayoutManager(this)
+        binding.rvPopularPlaces.adapter = PopularPlacesAdapter(popularPlaces)
     }
 }

@@ -46,15 +46,8 @@
 
         <!-- Destination Detail Activity -->
         <activity
-            android:name=".ui.DestinationDetailActivity"
-            android:exported="false"
-            android:theme="@style/Theme.TravelWise"
-            android:parentActivityName=".ui.home.HomeActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ui.home.HomeActivity" />
-        </activity>
-
+            android:name=".DestinationDetailActivity"
+            android:exported="false" />
     </application>
 
 </manifest>
