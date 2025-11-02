@@ -78,8 +78,14 @@
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
             android:layout_margin="4dp"
+            android:scaleType="center"
+            app:fabSize="mini"
+            app:fabCustomSize="36dp"
+            app:maxImageSize="18dp"
             app:backgroundTint="@android:color/white"
-            app:srcCompat="@drawable/ic_heart" />
+            app:tint="@android:color/darker_gray"
+            app:srcCompat="@drawable/ic_heart"
+            app:elevation="2dp" />
 
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

@@ -78,8 +78,21 @@ class HomeActivity : AppCompatActivity() {
         }
 
         binding.rvDestinations.apply {
-            layoutManager = LinearLayoutManager(this@HomeActivity)
+            layoutManager = LinearLayoutManager(this@HomeActivity, LinearLayoutManager.HORIZONTAL, false)
             adapter = destinationAdapter
+
+            // Add horizontal spacing between cards
+            val spacingInPixels = resources.getDimensionPixelSize(R.dimen.card_spacing)
+            addItemDecoration(object : androidx.recyclerview.widget.RecyclerView.ItemDecoration() {
+                override fun getItemOffsets(
+                    outRect: android.graphics.Rect,
+                    view: android.view.View,
+                    parent: androidx.recyclerview.widget.RecyclerView,
+                    state: androidx.recyclerview.widget.RecyclerView.State
+                ) {
+                    outRect.right = spacingInPixels
+                }
+            })
         }
     }
 
