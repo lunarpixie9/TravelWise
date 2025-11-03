@@ -11,6 +11,7 @@ import com.example.travelwise.databinding.ActivityHomeBinding
 import com.example.travelwise.models.Destination
 import com.example.travelwise.DestinationDetailActivity
 import com.example.travelwise.FavoritesActivity
+import com.example.travelwise.ProfileActivity
 import kotlinx.coroutines.launch
 
 class HomeActivity : AppCompatActivity() {
@@ -52,7 +53,10 @@ class HomeActivity : AppCompatActivity() {
                     true
                 }
                 R.id.nav_trips -> true
-                R.id.nav_profile -> true
+                R.id.nav_profile -> {
+                    startActivity(Intent(this, ProfileActivity::class.java))
+                    true
+                }
                 else -> false
             }
         }
