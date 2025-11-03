@@ -31,8 +31,11 @@ class HomeActivity : AppCompatActivity() {
         // ✅ Get username from intent or show default
         val username = intent.getStringExtra("USERNAME") ?: "Traveler"
 
+        // ✅ Extract first name (before dot or any separator)
+        val firstName = username.split(".", "_", " ")[0]
+        
         // ✅ Capitalize first letter and set greeting text
-        val displayName = username.replaceFirstChar { it.uppercase() }
+        val displayName = firstName.replaceFirstChar { it.uppercase() }
         binding.tvGreeting.text = "Welcome, $displayName!"
 
         // ✅ Setup category boxes
