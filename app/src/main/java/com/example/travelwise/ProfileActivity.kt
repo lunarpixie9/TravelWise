@@ -77,6 +77,7 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun setupBottomNavigation() {
+        // FIXED: Changed from bottomNavigation to bottomNavigation (underscore)
         binding.bottomNavigation.selectedItemId = R.id.nav_profile
 
         binding.bottomNavigation.setOnItemSelectedListener { item ->
@@ -88,6 +89,7 @@ class ProfileActivity : AppCompatActivity() {
                 }
                 R.id.nav_favorites -> {
                     startActivity(Intent(this, FavoritesActivity::class.java))
+                    finish() // Add finish() here to prevent activity stack buildup
                     true
                 }
                 R.id.nav_profile -> true

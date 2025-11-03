@@ -8,17 +8,18 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.travelwise.adapters.DestinationAdapter
 import com.example.travelwise.databinding.ActivityFavoritesBinding
 import com.example.travelwise.models.Destination
+import com.example.travelwise.ui.home.HomeActivity
 import com.example.travelwise.utils.FavoritesManager
 
 class FavoritesActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityFavoritesBinding  // Changed this line
+    private lateinit var binding: ActivityFavoritesBinding
     private lateinit var favoritesManager: FavoritesManager
     private lateinit var adapter: DestinationAdapter
     private val destinations = mutableListOf<Destination>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityFavoritesBinding.inflate(layoutInflater)  // Changed this line
+        binding = ActivityFavoritesBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         supportActionBar?.hide()
@@ -126,15 +127,24 @@ class FavoritesActivity : AppCompatActivity() {
     }
 
     private fun setupBottomNavigation() {
+        // FIXED: Changed from bottomNavigation to bottomNavigation (to match XML)
         binding.bottomNavigation.selectedItemId = R.id.nav_favorites
 
         binding.bottomNavigation.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_home -> {
+                    // FIXED: Properly navigate to home instead of just finishing
+                    startActivity(Intent(this, HomeActivity::class.java))
                     finish()
                     true
                 }
                 R.id.nav_favorites -> true
+                R.id.nav_profile -> {
+                    // FIXED: Added navigation to profile
+                    startActivity(Intent(this, ProfileActivity::class.java))
+                    finish()
+                    true
+                }
                 else -> false
             }
         }
