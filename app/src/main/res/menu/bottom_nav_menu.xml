@@ -4,16 +4,19 @@
         android:id="@+id/nav_home"
         android:icon="@drawable/ic_home"
         android:title="Home" />
-    <item
-        android:id="@+id/nav_trips"
-        android:icon="@drawable/ic_trips"
-        android:title="My Trips" />
+
     <item
         android:id="@+id/nav_favorites"
-        android:icon="@drawable/heart_svgrepo_com"
-        android:title="Favourites" />
+        android:icon="@drawable/ic_favorite"
+        android:title="Favorites" />
+
+    <item
+        android:id="@+id/nav_trips"
+        android:icon="@drawable/ic_booking"
+        android:title="Trips" />
+
     <item
         android:id="@+id/nav_profile"
-        android:icon="@drawable/ic_user"
+        android:icon="@drawable/ic_profile"
         android:title="Profile" />
 </menu>

@@ -12,6 +12,7 @@ import com.example.travelwise.models.Destination
 import com.example.travelwise.DestinationDetailActivity
 import com.example.travelwise.FavoritesActivity
 import com.example.travelwise.ProfileActivity
+import com.example.travelwise.TripsActivity
 import kotlinx.coroutines.launch
 
 class HomeActivity : AppCompatActivity() {
@@ -25,44 +26,30 @@ class HomeActivity : AppCompatActivity() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // ✅ Hide action bar
+        // Hide action bar
         supportActionBar?.hide()
 
-        // ✅ Get username from intent or show default
+        // Get username from intent or show default
         val username = intent.getStringExtra("USERNAME") ?: "Traveler"
 
-        // ✅ Extract first name (before dot or any separator)
+        // Extract first name (before dot or any separator)
         val firstName = username.split(".", "_", " ")[0]
-        
-        // ✅ Capitalize first letter and set greeting text
+
+        // Capitalize first letter and set greeting text
         val displayName = firstName.replaceFirstChar { it.uppercase() }
         binding.tvGreeting.text = "Welcome, $displayName!"
 
-        // ✅ Setup category boxes
+        // Setup category boxes
         setupCategoryBoxes()
 
-        // ✅ RecyclerView setup
+        // RecyclerView setup
         setupRecyclerView()
 
-        // ✅ Load sample destinations
+        // Load sample destinations
         loadSampleData()
 
-        // ✅ Bottom navigation
-        binding.bottomNavigation.setOnItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.nav_home -> true
-                R.id.nav_favorites -> {
-                    startActivity(Intent(this, FavoritesActivity::class.java))
-                    true
-                }
-                R.id.nav_trips -> true
-                R.id.nav_profile -> {
-                    startActivity(Intent(this, ProfileActivity::class.java))
-                    true
-                }
-                else -> false
-            }
-        }
+        // Bottom navigation
+        setupBottomNavigation()
     }
 
     private fun setupCategoryBoxes() {
@@ -175,5 +162,32 @@ class HomeActivity : AppCompatActivity() {
             putExtra("DESTINATION_DESC", destination.description)
         }
         startActivity(intent)
+    }
+
+    private fun setupBottomNavigation() {
+        // Set Home as selected
+        binding.bottomNavigation.selectedItemId = R.id.nav_home
+
+        binding.bottomNavigation.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_home -> true
+                R.id.nav_favorites -> {
+                    startActivity(Intent(this, FavoritesActivity::class.java))
+                    finish()
+                    true
+                }
+                R.id.nav_trips -> {
+                    startActivity(Intent(this, TripsActivity::class.java))
+                    finish()
+                    true
+                }
+                R.id.nav_profile -> {
+                    startActivity(Intent(this, ProfileActivity::class.java))
+                    finish()
+                    true
+                }
+                else -> false
+            }
+        }
     }
 }

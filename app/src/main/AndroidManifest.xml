@@ -54,6 +54,11 @@
             android:name=".FavoritesActivity"
             android:exported="false" />
 
+        <!-- Trips Activity -->
+        <activity
+            android:name=".TripsActivity"
+            android:exported="false" />
+
         <!-- Profile Activity -->
         <activity
             android:name=".ProfileActivity"
