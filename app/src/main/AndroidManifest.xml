@@ -48,6 +48,12 @@
         <activity
             android:name=".DestinationDetailActivity"
             android:exported="false" />
+
+        <!-- Favorites Activity -->
+        <activity
+            android:name=".FavoritesActivity"
+            android:exported="false" />
+
     </application>
 
 </manifest>

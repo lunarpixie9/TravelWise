@@ -10,6 +10,7 @@ import com.example.travelwise.adapters.DestinationAdapter
 import com.example.travelwise.databinding.ActivityHomeBinding
 import com.example.travelwise.models.Destination
 import com.example.travelwise.DestinationDetailActivity
+import com.example.travelwise.FavoritesActivity
 import kotlinx.coroutines.launch
 
 class HomeActivity : AppCompatActivity() {
@@ -46,8 +47,11 @@ class HomeActivity : AppCompatActivity() {
         binding.bottomNavigation.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_home -> true
+                R.id.nav_favorites -> {
+                    startActivity(Intent(this, FavoritesActivity::class.java))
+                    true
+                }
                 R.id.nav_trips -> true
-                R.id.nav_favorites -> true
                 R.id.nav_profile -> true
                 else -> false
             }

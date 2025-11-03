@@ -11,26 +11,22 @@ class FavoritesManager(context: Context) {
         context.getSharedPreferences("favorites_prefs", Context.MODE_PRIVATE)
     private val gson = Gson()
 
-    // Save favorite destination ID
     fun addFavorite(destinationId: Int) {
         val favorites = getFavorites().toMutableSet()
         favorites.add(destinationId)
         saveFavorites(favorites)
     }
 
-    // Remove favorite destination ID
     fun removeFavorite(destinationId: Int) {
         val favorites = getFavorites().toMutableSet()
         favorites.remove(destinationId)
         saveFavorites(favorites)
     }
 
-    // Check if destination is favorite
     fun isFavorite(destinationId: Int): Boolean {
         return getFavorites().contains(destinationId)
     }
 
-    // Get all favorite IDs
     fun getFavorites(): Set<Int> {
         val favoritesJson = sharedPreferences.getString("favorites", "[]")
         val type = object : TypeToken<Set<Int>>() {}.type
