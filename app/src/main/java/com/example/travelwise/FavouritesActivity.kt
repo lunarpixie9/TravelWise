@@ -29,13 +29,13 @@ class FavoritesActivity : AppCompatActivity() {
         favoritesManager = FavoritesManager(this)
 
         // Prevent search bar from auto-focusing
-        binding.root.post {
-            binding.etSearch.clearFocus()
-            binding.root.requestFocus()
-        }
+//        binding.root.post {
+//            binding.etSearch.clearFocus()
+//            binding.root.requestFocus()
+//        }
 
         setupRecyclerView()
-        setupSearch()
+//        setupSearch()
         setupBottomNavigation()
     }
 
@@ -55,17 +55,17 @@ class FavoritesActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupSearch() {
-        binding.etSearch.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
-
-            override fun afterTextChanged(s: Editable?) {
-                filterDestinations(s.toString())
-            }
-        })
-    }
+//    private fun setupSearch() {
+//        binding.etSearch.addTextChangedListener(object : TextWatcher {
+//            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+//
+//            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+//
+//            override fun afterTextChanged(s: Editable?) {
+//                filterDestinations(s.toString())
+//            }
+//        })
+//    }
 
     private fun filterDestinations(query: String) {
         val searchQuery = query.trim().lowercase()

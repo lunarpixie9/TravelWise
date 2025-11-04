@@ -35,14 +35,14 @@ class FlightActivity : AppCompatActivity() {
         binding.etTo.clearFocus()
         binding.root.requestFocus()
 
-        // Setup search functionality
-        setupSearch()
-
-        // Setup RecyclerView
+        // Setup RecyclerView first (adapter must be initialized before search triggers)
         setupRecyclerView()
 
         // Load sample flight data
         loadSampleFlights()
+
+        // Setup search functionality (after adapter initialized)
+        setupSearch()
     }
 
     private fun setupSearch() {
@@ -113,6 +113,7 @@ class FlightActivity : AppCompatActivity() {
             )
         }
 
+        if (!::flightAdapter.isInitialized) return
         flightAdapter.notifyDataSetChanged()
     }
 
