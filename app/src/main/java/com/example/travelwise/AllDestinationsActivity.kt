@@ -1,4 +1,4 @@
-package com.example.travelwise.ui.home
+package com.example.travelwise
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,103 +6,39 @@ import android.text.Editable
 import android.text.TextWatcher
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.travelwise.R
 import com.example.travelwise.adapters.DestinationAdapter
-import com.example.travelwise.databinding.ActivityHomeBinding
+import com.example.travelwise.databinding.ActivityAllDestinationsBinding
 import com.example.travelwise.models.Destination
-import com.example.travelwise.AllDestinationsActivity
-import com.example.travelwise.CarActivity
-import com.example.travelwise.DestinationDetailActivity
-import com.example.travelwise.FavoritesActivity
-import com.example.travelwise.FlightActivity
-import com.example.travelwise.HotelActivity
-import com.example.travelwise.MealActivity
-import com.example.travelwise.ProfileActivity
-import com.example.travelwise.TripsActivity
 import kotlinx.coroutines.launch
 
-class HomeActivity : AppCompatActivity() {
+class AllDestinationsActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityHomeBinding
+    private lateinit var binding: ActivityAllDestinationsBinding
     private lateinit var destinationAdapter: DestinationAdapter
     private val allDestinations = mutableListOf<Destination>()
     private val displayedDestinations = mutableListOf<Destination>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityHomeBinding.inflate(layoutInflater)
+        binding = ActivityAllDestinationsBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Hide action bar
         supportActionBar?.hide()
 
-        // Get username from intent or show default
-        val username = intent.getStringExtra("USERNAME") ?: "Traveler"
+        binding.toolbar.setNavigationOnClickListener {
+            finish()
+        }
 
-        // Extract first name (before dot or any separator)
-        val firstName = username.split(".", "_", " ")[0]
-
-        // Capitalize first letter and set greeting text
-        val displayName = firstName.replaceFirstChar { it.uppercase() }
-        binding.tvGreeting.text = "Welcome, $displayName!"
-
-        // Prevent search bar from auto-focusing on activity start
-        // Use post to ensure it happens after layout is complete
         binding.root.post {
             binding.etSearch.clearFocus()
             binding.root.requestFocus()
         }
 
-        // Setup category boxes
-        setupCategoryBoxes()
-
-        // Setup View All click listener
-        binding.tvViewAll.setOnClickListener {
-            startActivity(Intent(this, AllDestinationsActivity::class.java))
-        }
-
-        // RecyclerView setup
         setupRecyclerView()
-
-        // Load sample destinations
-        loadSampleData()
-
-        // Setup dynamic search
+        loadAllDestinations()
         setupSearch()
-
-        // Bottom navigation
-        setupBottomNavigation()
-    }
-
-    private fun setupCategoryBoxes() {
-        // Hotels - using View Binding
-        binding.boxHotels.ivCategoryIcon.setImageResource(R.drawable.ic_hotel)
-        binding.boxHotels.tvCategoryName.text = "Hotels"
-        binding.boxHotels.root.setOnClickListener {
-            startActivity(Intent(this, HotelActivity::class.java))
-        }
-
-        // Flights
-        binding.boxFlights.ivCategoryIcon.setImageResource(R.drawable.ic_flight)
-        binding.boxFlights.tvCategoryName.text = "Flights"
-        binding.boxFlights.root.setOnClickListener {
-            startActivity(Intent(this, FlightActivity::class.java))
-        }
-
-        // Cars
-        binding.boxCars.ivCategoryIcon.setImageResource(R.drawable.ic_car)
-        binding.boxCars.tvCategoryName.text = "Cars"
-        binding.boxCars.root.setOnClickListener {
-            startActivity(Intent(this, CarActivity::class.java))
-        }
-
-        // Meals
-        binding.boxMeals.ivCategoryIcon.setImageResource(R.drawable.ic_meal)
-        binding.boxMeals.tvCategoryName.text = "Meals"
-        binding.boxMeals.root.setOnClickListener {
-            startActivity(Intent(this, MealActivity::class.java))
-        }
     }
 
     private fun setupRecyclerView() {
@@ -110,22 +46,11 @@ class HomeActivity : AppCompatActivity() {
             openDestinationDetail(destination)
         }
 
-        binding.rvDestinations.apply {
-            layoutManager = LinearLayoutManager(this@HomeActivity, LinearLayoutManager.HORIZONTAL, false)
+        // Use GridLayoutManager for 2 columns on larger screens, 1 column on smaller screens
+        val spanCount = if (resources.configuration.screenWidthDp >= 600) 2 else 1
+        binding.rvAllDestinations.apply {
+            layoutManager = GridLayoutManager(this@AllDestinationsActivity, spanCount)
             adapter = destinationAdapter
-
-            // Add horizontal spacing between cards
-            val spacingInPixels = resources.getDimensionPixelSize(R.dimen.card_spacing)
-            addItemDecoration(object : androidx.recyclerview.widget.RecyclerView.ItemDecoration() {
-                override fun getItemOffsets(
-                    outRect: android.graphics.Rect,
-                    view: android.view.View,
-                    parent: androidx.recyclerview.widget.RecyclerView,
-                    state: androidx.recyclerview.widget.RecyclerView.State
-                ) {
-                    outRect.right = spacingInPixels
-                }
-            })
         }
     }
 
@@ -160,7 +85,7 @@ class HomeActivity : AppCompatActivity() {
         destinationAdapter.notifyDataSetChanged()
     }
 
-    private fun loadSampleData() {
+    private fun loadAllDestinations() {
         lifecycleScope.launch {
             allDestinations.clear()
             allDestinations.addAll(
@@ -295,31 +220,5 @@ class HomeActivity : AppCompatActivity() {
         }
         startActivity(intent)
     }
-
-    private fun setupBottomNavigation() {
-        // Set Home as selected
-        binding.bottomNavigation.selectedItemId = R.id.nav_home
-
-        binding.bottomNavigation.setOnItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.nav_home -> true
-                R.id.nav_favorites -> {
-                    startActivity(Intent(this, FavoritesActivity::class.java))
-                    finish()
-                    true
-                }
-                R.id.nav_trips -> {
-                    startActivity(Intent(this, TripsActivity::class.java))
-                    finish()
-                    true
-                }
-                R.id.nav_profile -> {
-                    startActivity(Intent(this, ProfileActivity::class.java))
-                    finish()
-                    true
-                }
-                else -> false
-            }
-        }
-    }
 }
+
