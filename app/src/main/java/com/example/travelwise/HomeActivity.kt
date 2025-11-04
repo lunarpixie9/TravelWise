@@ -12,6 +12,7 @@ import com.example.travelwise.adapters.DestinationAdapter
 import com.example.travelwise.databinding.ActivityHomeBinding
 import com.example.travelwise.models.Destination
 import com.example.travelwise.AllDestinationsActivity
+import com.example.travelwise.AiTripPlanActivity
 import com.example.travelwise.CarActivity
 import com.example.travelwise.DestinationDetailActivity
 import com.example.travelwise.FavoritesActivity
@@ -139,6 +140,20 @@ class HomeActivity : AppCompatActivity() {
                 filterDestinations(s.toString())
             }
         })
+
+        // Navigate to AI Trip planner when user submits via keyboard action
+        binding.etSearch.setOnEditorActionListener { v, actionId, event ->
+            val query = binding.etSearch.text?.toString()?.trim() ?: ""
+            if (query.isNotEmpty()) {
+                val intent = Intent(this, AiTripPlanActivity::class.java).apply {
+                    putExtra("DESTINATION_QUERY", query)
+                }
+                startActivity(intent)
+                true
+            } else {
+                false
+            }
+        }
     }
 
     private fun filterDestinations(query: String) {

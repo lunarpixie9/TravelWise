@@ -15,6 +15,8 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        // Expose Gemini API key directly (replace with your real key)
+        buildConfigField("String", "GEMINI_API_KEY", "\"AIzaSyCZmAOBJ2Sxas4aGfMDnvlpjifhG7boyG0\"")
     }
 
     buildTypes {
@@ -35,6 +37,7 @@ android {
     }
     buildFeatures {
         viewBinding = true
+        buildConfig = true
     }
 }
 
@@ -62,6 +65,8 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.9.4")
+    // Networking for Gemini REST
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
     testImplementation(libs.junit)
     implementation("com.google.code.gson:gson:2.10.1")
     androidTestImplementation(libs.androidx.junit)

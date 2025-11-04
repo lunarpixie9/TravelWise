@@ -90,6 +90,12 @@
             android:name=".AllDestinationsActivity"
             android:exported="false" />
 
+        <!-- AI Trip Plan Activity -->
+        <activity
+            android:name=".AiTripPlanActivity"
+            android:exported="false"
+            android:theme="@style/Theme.TravelWise" />
+
     </application>
 
 </manifest>
